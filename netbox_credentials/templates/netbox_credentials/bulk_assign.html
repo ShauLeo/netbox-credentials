@@ -1,0 +1,17 @@
+{% extends 'generic/object_edit.html' %}
+{% load form_helpers %}
+
+{% block title %}Bulk Assign Credential to Devices{% endblock %}
+
+{% block form %}
+<div class="card">
+    <h5 class="card-header">Bulk Assign Credential</h5>
+    <div class="card-body">
+        <p class="text-muted">
+            Select a credential and one or more devices. The credential will be
+            linked to every selected device. Existing assignments are skipped.
+        </p>
+        {% render_form form %}
+    </div>
+</div>
+{% endblock form %}

@@ -14,3 +14,9 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["netbox_credentials*"]
+
+[tool.setuptools.package-data]
+netbox_credentials = [
+    "templates/**/*.html",
+    "static/**/*",
+]

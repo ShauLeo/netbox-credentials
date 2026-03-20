@@ -4,7 +4,7 @@ from .models import DeviceCredential
 class DeviceCredentialsPanel(PluginTemplateExtension):
     model = "dcim.device"
 
-    def full_width_page(self):
+    def right_page(self):
         device = self.context["object"]
         assignments = (
             DeviceCredential.objects.filter(device=device)

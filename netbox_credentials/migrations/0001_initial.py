@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ("password", models.TextField(blank=True, default="", db_column="password", verbose_name="Password (encrypted)")),
                 ("description", models.CharField(max_length=500, blank=True, default="")),
                 ("comments", models.TextField(blank=True, default="")),
-                ("tags", taggit.managers.TaggableManager(through="taggit.TaggedItem", blank=True)),
+                ("tags", taggit.managers.TaggableManager(blank=True)),
             ],
             options={
                 "ordering": ["name"],
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ("role", models.CharField(max_length=100, blank=True, default="", help_text="Optional role, e.g. 'management', 'snmp', 'api'")),
                 ("credential", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="assignments", to="netbox_credentials.credential")),
                 ("device", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name="credential_assignments", to="dcim.device")),
-                ("tags", taggit.managers.TaggableManager(through="taggit.TaggedItem", blank=True)),
+                ("tags", taggit.managers.TaggableManager(blank=True)),
             ],
             options={
                 "ordering": ["credential__name"],

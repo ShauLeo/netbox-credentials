@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db.models import Count
 from django.shortcuts import redirect, render
+from django.views import View
 
 from netbox.views import generic
 
@@ -11,12 +12,10 @@ from .forms import (
     CredentialForm,
     DeviceCredentialFilterForm,
     DeviceCredentialForm,
+    PluginSettingForm,
 )
-from .models import Credential, DeviceCredential
+from .models import Credential, DeviceCredential, PluginSetting
 from .tables import CredentialTable, DeviceCredentialTable
-
-
-# ── Credential views ────────────────────────────────────────────────────────
 
 
 class CredentialListView(generic.ObjectListView):
@@ -48,9 +47,6 @@ class CredentialDeleteView(generic.ObjectDeleteView):
     queryset = Credential.objects.all()
 
 
-# ── DeviceCredential views ──────────────────────────────────────────────────
-
-
 class DeviceCredentialListView(generic.ObjectListView):
     queryset = DeviceCredential.objects.select_related("credential", "device")
     table = DeviceCredentialTable
@@ -71,13 +67,8 @@ class DeviceCredentialDeleteView(generic.ObjectDeleteView):
     queryset = DeviceCredential.objects.all()
 
 
-# ── Bulk-assign view ────────────────────────────────────────────────────────
-
-
 class BulkAssignView(generic.ObjectEditView):
-    """Assign one credential to many devices in a single action."""
-
-    queryset = DeviceCredential.objects.none()  # not used directly
+    queryset = DeviceCredential.objects.none()
     form = BulkAssignForm
     template_name = "netbox_credentials/bulk_assign.html"
 
@@ -100,9 +91,22 @@ class BulkAssignView(generic.ObjectEditView):
                 )
                 if was_created:
                     created += 1
-            messages.success(
-                request,
-                f"Assigned '{credential.name}' to {created} device(s).",
-            )
+            messages.success(request, f"Assigned '{credential.name}' to {created} device(s).")
             return redirect("plugins:netbox_credentials:credential_list")
         return render(request, self.template_name, {"form": form})
+
+
+class PluginSettingView(View):
+    def get(self, request):
+        instance = PluginSetting.get()
+        form = PluginSettingForm(instance=instance)
+        return render(request, "netbox_credentials/settings.html", {"form": form})
+
+    def post(self, request):
+        instance = PluginSetting.get()
+        form = PluginSettingForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Credentials plugin settings saved.")
+            return redirect("plugins:netbox_credentials:settings")
+        return render(request, "netbox_credentials/settings.html", {"form": form})

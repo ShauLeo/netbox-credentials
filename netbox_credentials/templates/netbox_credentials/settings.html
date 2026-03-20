@@ -1,0 +1,30 @@
+{% extends 'base/layout.html' %}
+
+{% block title %}Credentials Plugin Settings{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <h5 class="card-header">
+                <i class="mdi mdi-cog"></i> Credentials Panel Settings
+            </h5>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Panel Position</label>
+                        {{ form.panel_position }}
+                        <div class="form-text text-muted">
+                            Choose where the credentials panel appears on the device detail page.
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="mdi mdi-content-save"></i> Save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -101,3 +101,29 @@ class DeviceCredential(NetBoxModel):
 
     def get_absolute_url(self):
         return reverse("plugins:netbox_credentials:devicecredential", args=[self.pk])
+
+
+class PluginSetting(models.Model):
+    """Singleton model to store plugin UI settings."""
+    POSITION_CHOICES = [
+        ("left_page", "Left column"),
+        ("right_page", "Right column"),
+        ("full_width_page", "Full width (bottom)"),
+    ]
+    panel_position = models.CharField(
+        max_length=20,
+        choices=POSITION_CHOICES,
+        default="left_page",
+    )
+
+    class Meta:
+        verbose_name = "Plugin Setting"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1  # Singleton — only ever one row
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def get(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj

@@ -34,5 +34,15 @@ menu = PluginMenu(
                 ),
             ),
         ),
+        (
+            "Configuration",
+            (
+                PluginMenuItem(
+                    link="plugins:netbox_credentials:settings",
+                    link_text="Panel Settings",
+                    buttons=(),
+                ),
+            ),
+        ),
     ),
 )

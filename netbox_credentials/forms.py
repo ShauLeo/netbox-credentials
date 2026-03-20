@@ -93,3 +93,15 @@ class BulkAssignForm(forms.Form):
     credential = DynamicModelChoiceField(queryset=Credential.objects.all())
     devices = DynamicModelMultipleChoiceField(queryset=Device.objects.all())
     role = forms.CharField(max_length=100, required=False)
+
+
+from django import forms
+from .models import PluginSetting
+
+class PluginSettingForm(forms.ModelForm):
+    class Meta:
+        model = PluginSetting
+        fields = ["panel_position"]
+        widgets = {
+            "panel_position": forms.Select(attrs={"class": "form-select"})
+        }

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "netbox-credentials"
+version = "0.1.0"
+description = "NetBox Credentials Plugin"
+requires-python = ">=3.10"
+dependencies = [
+    "cryptography",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["netbox_credentials*"]
